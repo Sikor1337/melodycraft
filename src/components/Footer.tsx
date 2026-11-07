@@ -1,4 +1,5 @@
 import React from 'react';
+import { CONTACT_EMAIL } from '../config';
 
 export const Footer: React.FC = () => {
   const year = new Date().getFullYear();
@@ -21,7 +22,7 @@ export const Footer: React.FC = () => {
             <a href="#how-it-works" className="hover:text-white transition-colors">How it works</a>
             <a href="#pricing" className="hover:text-white transition-colors">Pricing</a>
             <a href="#faq" className="hover:text-white transition-colors">FAQ</a>
-            <a href="mailto:hello@melodycraft.org" className="hover:text-white transition-colors">Support</a>
+            <a href={`mailto:${CONTACT_EMAIL}`} className="hover:text-white transition-colors">Support</a>
           </div>
         </div>
 

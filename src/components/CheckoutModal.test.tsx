@@ -6,7 +6,7 @@ import type { OrderItem } from '../types';
 // Mock the Stripe config: standard has a Payment Link, the others don't.
 vi.mock('../config', () => ({
   STRIPE_PAYMENT_LINKS: { standard: 'https://buy.stripe.com/test_abc123', premium: '', signature: '' },
-  CONTACT_EMAIL: 'hello@melodycraft.org',
+  CONTACT_EMAIL: 'hello@melodycraft.io',
   WEB3FORMS_ACCESS_KEY: '',
 }));
 
@@ -36,7 +36,7 @@ describe('CheckoutModal', () => {
     const emailLink = screen.getByRole('link', { name: /email my order/i });
     expect(emailLink).toBeInTheDocument();
     const href = emailLink.getAttribute('href') ?? '';
-    expect(href.startsWith('mailto:hello@melodycraft.org')).toBe(true);
+    expect(href.startsWith('mailto:hello@melodycraft.io')).toBe(true);
     expect(decodeURIComponent(href)).toContain('Our first dance under the stars');
   });
 

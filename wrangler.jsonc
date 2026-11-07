@@ -1,0 +1,18 @@
+{
+  // MelodyCraft as a Cloudflare Worker with static assets, on the owner's domain melodycraft.io
+  // (zone on the same Cloudflare account, bought 07.11.2026). Same pattern as the plumber site.
+  // Publish: deploy.bat (npm run build -> npx wrangler deploy).
+  "name": "melodycraft",
+  "routes": [
+    { "pattern": "melodycraft.io", "custom_domain": true },
+    { "pattern": "www.melodycraft.io", "custom_domain": true }
+  ],
+  "compatibility_date": "2026-11-03",
+  "observability": {
+    "enabled": true
+  },
+  "assets": {
+    "directory": "dist",
+    "not_found_handling": "single-page-application"
+  }
+}

@@ -8,14 +8,13 @@ export default defineConfig({
     react(),
     tailwindcss(),
   ],
-  // Served from https://sikor1337.github.io/melodycraft.org/ — assets need this
-  // sub-path prefix. If you later point a custom domain (e.g. melodycraft.org)
-  // at the root, change this back to '/'.
-  base: '/melodycraft.org/',
+  // Served from the root of https://melodycraft.io/ (Cloudflare Worker with static
+  // assets, see wrangler.jsonc). Until 07.11.2026 the site lived on GitHub Pages
+  // under /melodycraft.org/ — the frozen docs/ folder is that old build.
+  base: '/',
   build: {
-    // Output into docs/ so GitHub Pages can serve from main → /docs
-    // (single branch, no separate gh-pages branch).
-    outDir: 'docs',
+    // Output into dist/ (gitignored); `npx wrangler deploy` uploads it.
+    outDir: 'dist',
     emptyOutDir: true,
     sourcemap: false,
   },

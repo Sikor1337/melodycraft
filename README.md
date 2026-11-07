@@ -8,7 +8,8 @@ producers craft a finished track, and checkout redirects to Stripe. No backend a
 integration — the order form is a front-end brief. Accounts/login are deferred to a future
 1.0; the MVP has no login.
 
-🔗 **Live site:** https://sikor1337.github.io/melodycraft.org/
+🔗 **Live site:** https://melodycraft.io/ (Cloudflare, since 07.11.2026). The old address
+https://sikor1337.github.io/melodycraft.org/ still serves the frozen July build from `docs/`.
 
 > History note: started as a Google AI Studio export with two Gemini features (an AI
 > song-concept generator and an AI image "Art Studio") and a neon/cyberpunk theme. Both AI
@@ -54,15 +55,14 @@ Prerequisites: Node.js v18+.
 ```bash
 npm install        # install dependencies
 npm run dev        # start the Vite dev server
-npm run build      # production build to docs/
+npm run build      # production build to dist/
 npm run lint       # tsc --noEmit (type-check)
 npm test           # run the Vitest suite once (npm run test:watch to watch)
 npm run preview    # serve the production build locally
 ```
 
 **Windows helpers:** double-click `start-dev.bat` (installs deps first run, serves
-`http://127.0.0.1:3000/melodycraft.org/`, opens the browser) and `stop-dev.bat`. Note the
-dev URL includes the `/melodycraft.org/` base path.
+`http://127.0.0.1:3000/`, opens the browser) and `stop-dev.bat`.
 
 No API keys or environment variables required to run.
 
@@ -104,13 +104,16 @@ types. No ESLint or formatter.
 
 ## 5. Deployment
 
-GitHub Pages from **`main` → `/docs`** — everything on one branch. `vite.config.ts` sets
-`outDir: 'docs'` and the built `docs/` is committed. To publish: run **`deploy.bat`** (build
-→ commit `docs/` → push). One-time setup: Pages **Source = Deploy from a branch → `main` →
-`/docs`**. `base` is `'/melodycraft.org/'` (served from
-`https://sikor1337.github.io/melodycraft.org/`); change to `'/'` for a root custom domain.
-`docs/` is generated — never edit by hand. The Actions workflow is kept but manual-only
-(`workflow_dispatch`).
+**Cloudflare** since 07.11.2026: a Worker with static assets named `melodycraft`
+(`wrangler.jsonc`), on the custom domains `melodycraft.io` and `www.melodycraft.io` — the
+zone is on the same Cloudflare account. `vite.config.ts` builds to `dist/` (gitignored) with
+`base: '/'`. To publish: run **`deploy.bat`** (lint → tests → build → `npx wrangler deploy`);
+it needs a wrangler login on the computer (`npx wrangler whoami`). Nothing is committed by
+the deploy — commit source changes yourself.
+
+Before that the site was on GitHub Pages from `main` → `/docs`. `docs/` is that old build,
+frozen; it still serves https://sikor1337.github.io/melodycraft.org/. The Actions workflows
+are kept but manual-only (`workflow_dispatch`).
 
 ---
 
@@ -123,13 +126,13 @@ session with the Stripe plugin connected in live mode and say "go live".
    Switch the account (`$ikor sandbox`) to live mode.
 2. **Create 3 live Payment Links** — Test mode OFF, one per plan (Just the Song $9.99,
    Streaming for a Year $39.99, Streaming for Life $89.99). Each: one-time, USD, no shipping
-   address, after-payment redirect to `https://sikor1337.github.io/melodycraft.org/?paid=1`.
+   address, after-payment redirect to `https://melodycraft.io/?paid=1`.
    Live URLs look like `https://buy.stripe.com/xxxx` — **no `test_` segment**.
 3. **Web3Forms key** — https://web3forms.com, enter the inbox for briefs
-   (e.g. hello@melodycraft.org); the free key arrives by email.
+   (e.g. hello@melodycraft.io); the free key arrives by email.
 4. **Paste into `src/config.ts`** — the 3 live URLs into `STRIPE_PAYMENT_LINKS`; the key into
    `WEB3FORMS_ACCESS_KEY`.
-5. **Ship** — `npm run lint && npm test && deploy.bat`.
+5. **Ship** — `deploy.bat` (it runs lint and tests first).
 6. **Verify live** — run the order flow, confirm the brief email (with `MC-...` reference)
    arrives on "Pay" click, Stripe URL has no `test_` and shows the right plan/price. Don't use
    test cards in live mode (real money). Optional: pay $9.99 yourself, confirm `?paid=1`

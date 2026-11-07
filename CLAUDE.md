@@ -21,7 +21,7 @@ npm test           # run the Vitest suite once (npm run test:watch to watch)
 
 `npm run lint` (`tsc --noEmit`) is the primary check — run it after edits. `tsconfig.json` has `strict`, `noUnusedLocals`, and `noUnusedParameters`, so unused imports/vars fail the build. There is also a small **Vitest** suite (`npm test`) covering pricing, checkout, and types (`*.test.tsx` / `*.test.ts`; setup in `src/test/setup.ts`). There is no ESLint or formatter.
 
-**Windows helpers:** `start-dev.bat` (installs deps if needed, runs the server on `http://127.0.0.1:3000/melodycraft.org/`, opens the browser) and `stop-dev.bat`. Note the dev URL includes the `/melodycraft.org/` base path.
+**Windows helpers:** `start-dev.bat` (installs deps if needed, runs the server on `http://127.0.0.1:3000/`, opens the browser) and `stop-dev.bat`.
 
 ## Architecture
 
@@ -46,13 +46,12 @@ When adding UI, follow these tokens rather than reintroducing `glass`, `indigo/f
 
 ## Deployment
 
-Deployed to **GitHub Pages from `main` → `/docs`** — everything lives on one branch.
-The Actions-based deploy kept failing on CI (unreadable without the dashboard), so it
-was bypassed: `vite.config.ts` sets `outDir: 'docs'`, and `docs/` (the built output)
-is committed to `main`. To publish: run **`deploy.bat`** (build → commit `docs/` →
-push), or `npm run build` then commit `docs/`. The repo's Pages **Source must be
-"Deploy from a branch" → `main` → `/docs`**. `.github/workflows/deploy.yml` is kept
-but no longer runs on push (manual `workflow_dispatch` only). `base` is
-`'/melodycraft.org/'` (served from `https://sikor1337.github.io/melodycraft.org/`);
-change to `'/'` if a custom domain is pointed at the root. `docs/` is generated —
-never edit it by hand; re-run `deploy.bat`.
+Deployed to **Cloudflare** since 07.11.2026 — a Worker with static assets named
+`melodycraft` (`wrangler.jsonc`), on the custom domains `melodycraft.io` and
+`www.melodycraft.io`. `vite.config.ts` builds to `dist/` (gitignored) with `base: '/'`.
+To publish: run **`deploy.bat`** (lint → tests → build → `npx wrangler deploy`); it needs
+a wrangler login (`npx wrangler whoami`). The deploy commits nothing.
+
+`docs/` is the old GitHub Pages build (`main` → `/docs`, base `/melodycraft.org/`), frozen
+since 07.11.2026 and still served at `https://sikor1337.github.io/melodycraft.org/`. Never
+edit it by hand and do not build into it. `.github/workflows/deploy.yml` is manual-only.

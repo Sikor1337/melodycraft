@@ -8,7 +8,7 @@ import { Tier } from './types';
  *   2. Create one link per plan (Just the Song $9.99, Streaming for a Year $39.99,
  *      Streaming for Life $89.99).
  *   3. (Recommended) Under "After payment", set the success URL to:
- *        https://sikor1337.github.io/melodycraft.org/?paid=1
+ *        https://melodycraft.io/?paid=1
  *   4. Copy each link (looks like https://buy.stripe.com/xxxxxxxx) and paste below.
  *
  * Leave a value as '' until it's ready — the checkout then shows an email
@@ -21,7 +21,7 @@ export const STRIPE_PAYMENT_LINKS: Record<Tier, string> = {
 };
 
 /** Email used as a fallback when a Payment Link isn't configured yet. */
-export const CONTACT_EMAIL = 'hello@melodycraft.org';
+export const CONTACT_EMAIL = 'hello@melodycraft.io';
 
 /**
  * Web3Forms access key — emails the order brief to us when the customer
@@ -29,7 +29,7 @@ export const CONTACT_EMAIL = 'hello@melodycraft.org';
  *
  * How to get one (free, ~2 minutes):
  *   1. Go to https://web3forms.com and enter the inbox that should receive
- *      order briefs (e.g. hello@melodycraft.org).
+ *      order briefs (e.g. hello@melodycraft.io).
  *   2. The access key arrives by email — paste it below.
  *
  * The key is public by design (it only lets people send email TO us).

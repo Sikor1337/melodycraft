@@ -1,0 +1,19 @@
+# Response headers for the Cloudflare Worker static assets (A443, 13.11.2026).
+# Hashed build files never change under the same name, so browsers may keep them for a year.
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/fonts/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Security headers for every page. The CSP lists exactly what the site loads:
+# Spotify cover images (i.scdn.co), Spotify 30 s previews (p.scdn.co) and the order
+# brief sent to Web3Forms. Stripe and Spotify links are plain navigations, not embeds.
+/*
+  Strict-Transport-Security: max-age=31536000; includeSubDomains
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Cross-Origin-Opener-Policy: same-origin
+  X-Frame-Options: DENY
+  Permissions-Policy: camera=(), microphone=(), geolocation=()
+  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: https://i.scdn.co; media-src https://p.scdn.co; connect-src 'self' https://api.web3forms.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'

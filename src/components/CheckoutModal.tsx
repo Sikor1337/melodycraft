@@ -85,7 +85,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({ isOpen, onClose, i
               <span className="text-xl font-bold text-accent">${item.price}</span>
             </div>
             {summaryParts.length > 0 && (
-              <p className="text-sm text-stone-500 mt-2 capitalize">{summaryParts.join(' · ')}</p>
+              <p className="text-sm text-stone-400 mt-2 capitalize">{summaryParts.join(' · ')}</p>
             )}
           </div>
 
@@ -106,7 +106,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({ isOpen, onClose, i
                   </>
                 )}
               </button>
-              <p className="text-center text-xs text-stone-500">
+              <p className="text-center text-xs text-stone-400">
                 You'll be taken to Stripe's secure checkout. Cards, Apple Pay & Google Pay supported.
               </p>
             </div>

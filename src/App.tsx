@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, lazy, Suspense } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CheckCircle, X } from 'lucide-react';
 import { Navbar } from './components/Navbar';
@@ -8,11 +8,17 @@ import { AudioSamples } from './components/AudioSamples';
 import { Testimonials } from './components/Testimonials';
 import { FAQ } from './components/FAQ';
 import { Footer } from './components/Footer';
-import { SongBuilderModal } from './components/SongBuilderModal';
-import { CheckoutModal } from './components/CheckoutModal';
 import { Pricing } from './components/Pricing';
 import { TrustedBy } from './components/TrustedBy';
 import { OrderItem, SongOrder, Tier, TIER_PRICE } from './types';
+
+// The order form and checkout load only when opened, so the first screen needs less JavaScript.
+const SongBuilderModal = lazy(() =>
+  import('./components/SongBuilderModal').then((m) => ({ default: m.SongBuilderModal })),
+);
+const CheckoutModal = lazy(() =>
+  import('./components/CheckoutModal').then((m) => ({ default: m.CheckoutModal })),
+);
 
 function App() {
   const [isBuilderOpen, setIsBuilderOpen] = useState(false);
@@ -22,8 +28,12 @@ function App() {
   const [selectedTier, setSelectedTier] = useState<Tier>('standard');
   const [orderItem, setOrderItem] = useState<OrderItem | null>(null);
 
-  // Show a thank-you banner when Stripe redirects back with ?paid=1.
-  const [paid, setPaid] = useState(() => new URLSearchParams(window.location.search).get('paid') === '1');
+  // Show a thank-you banner when Stripe redirects back with ?paid=1. Read in an effect, not
+  // during render: the page is prerendered at build time, where there is no URL to read.
+  const [paid, setPaid] = useState(false);
+  useEffect(() => {
+    if (new URLSearchParams(window.location.search).get('paid') === '1') setPaid(true);
+  }, []);
 
   // Smooth-scroll when navigating to in-page section anchors.
   useEffect(() => {
@@ -56,11 +66,7 @@ function App() {
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      className="min-h-screen flex flex-col font-sans relative bg-stone-950 text-white selection:bg-accent selection:text-stone-950 overflow-x-hidden"
-    >
+    <div className="min-h-screen flex flex-col font-sans relative bg-stone-950 text-white selection:bg-accent selection:text-stone-950 overflow-x-hidden">
       <Navbar />
 
       <AnimatePresence>
@@ -97,26 +103,28 @@ function App() {
 
       <Footer />
 
-      <AnimatePresence>
-        {isBuilderOpen && (
-          <SongBuilderModal
-            isOpen={isBuilderOpen}
-            onClose={() => setIsBuilderOpen(false)}
-            initialGenre={selectedGenre}
-            selectedTier={selectedTier}
-            onOrder={handleOrderSong}
-          />
-        )}
+      <Suspense fallback={null}>
+        <AnimatePresence>
+          {isBuilderOpen && (
+            <SongBuilderModal
+              isOpen={isBuilderOpen}
+              onClose={() => setIsBuilderOpen(false)}
+              initialGenre={selectedGenre}
+              selectedTier={selectedTier}
+              onOrder={handleOrderSong}
+            />
+          )}
 
-        {isCheckoutOpen && (
-          <CheckoutModal
-            isOpen={isCheckoutOpen}
-            onClose={() => setIsCheckoutOpen(false)}
-            item={orderItem}
-          />
-        )}
-      </AnimatePresence>
-    </motion.div>
+          {isCheckoutOpen && (
+            <CheckoutModal
+              isOpen={isCheckoutOpen}
+              onClose={() => setIsCheckoutOpen(false)}
+              item={orderItem}
+            />
+          )}
+        </AnimatePresence>
+      </Suspense>
+    </div>
   );
 }
 

@@ -50,7 +50,7 @@ export const Testimonials: React.FC = () => {
                 </div>
                 <div>
                   <div className="font-semibold text-white text-sm">{t.author}</div>
-                  <div className="text-sm text-stone-500">{t.role}</div>
+                  <div className="text-sm text-stone-400">{t.role}</div>
                 </div>
               </figcaption>
             </motion.figure>

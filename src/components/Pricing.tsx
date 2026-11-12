@@ -80,7 +80,7 @@ export const Pricing: React.FC<PricingProps> = ({ onSelectPlan }) => {
 
               <div className="flex items-baseline gap-2 mb-8">
                 <span className="text-5xl font-bold text-white">${plan.price}</span>
-                <span className="text-stone-500">{plan.note}</span>
+                <span className="text-stone-400">{plan.note}</span>
               </div>
 
               <ul className="space-y-4 mb-10 flex-1">
@@ -106,7 +106,7 @@ export const Pricing: React.FC<PricingProps> = ({ onSelectPlan }) => {
           ))}
         </div>
 
-        <p className="text-sm text-stone-500 mt-8 max-w-2xl">
+        <p className="text-sm text-stone-400 mt-8 max-w-2xl">
           Add professional lyric writing to any plan for{' '}
           <span className="text-stone-300">$3.99</span>. You always approve the final song before
           we upload it anywhere.

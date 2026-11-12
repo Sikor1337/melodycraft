@@ -74,7 +74,8 @@ export const TrackPlayer: React.FC<TrackPlayerProps> = ({ track }) => {
   );
 
   const progressBar = (
-    <div className="relative py-2">
+    // py-2.5 + the 4 px bar = a 24 px tall seek area (WCAG 2.2 minimum touch target).
+    <div className="relative py-2.5">
       <div className="h-1 rounded-full bg-white/10 overflow-hidden pointer-events-none">
         <div className="h-full bg-accent" style={{ width: `${progress * 100}%` }} />
       </div>
@@ -118,7 +119,7 @@ export const TrackPlayer: React.FC<TrackPlayerProps> = ({ track }) => {
           href={track.href}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-xs text-stone-500 hover:text-accent transition-colors shrink-0"
+          className="inline-flex items-center min-h-6 text-xs text-stone-400 hover:text-accent transition-colors shrink-0"
         >
           Spotify ↗
         </a>

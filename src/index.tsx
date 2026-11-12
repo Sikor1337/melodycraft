@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
+import './fonts.css';
 import './index.css';
 
 interface ErrorBoundaryProps {
@@ -46,11 +47,22 @@ if (!rootElement) {
   throw new Error("Could not find root element to mount to");
 }
 
-const root = ReactDOM.createRoot(rootElement);
-root.render(
+const app = (
   <React.StrictMode>
     <ErrorBoundary>
       <App />
     </ErrorBoundary>
   </React.StrictMode>
 );
+
+// The production build ships the page already rendered (prerender.mjs), so React only has
+// to attach to it. Hydrating inside a transition lets React split that work into short
+// chunks instead of one long main-thread task (Total Blocking Time in PageSpeed).
+// The dev server serves an empty #root and renders from scratch.
+if (rootElement.hasChildNodes()) {
+  React.startTransition(() => {
+    ReactDOM.hydrateRoot(rootElement, app);
+  });
+} else {
+  ReactDOM.createRoot(rootElement).render(app);
+}

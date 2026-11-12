@@ -13,20 +13,23 @@ export const Footer: React.FC = () => {
               <span className="w-2 h-2 rounded-full bg-accent" />
               melodycraft
             </a>
-            <p className="text-stone-500 max-w-sm leading-relaxed">
+            <p className="text-stone-400 max-w-sm leading-relaxed">
               Custom songs, written and produced just for you. Delivered in 24 hours.
             </p>
           </div>
 
           <div className="flex flex-wrap gap-x-8 gap-y-3 text-sm font-medium text-stone-400">
-            <a href="#how-it-works" className="hover:text-white transition-colors">How it works</a>
-            <a href="#pricing" className="hover:text-white transition-colors">Pricing</a>
-            <a href="#faq" className="hover:text-white transition-colors">FAQ</a>
-            <a href={`mailto:${CONTACT_EMAIL}`} className="hover:text-white transition-colors">Support</a>
+            {/* min-h-6: at least 24 px tall, the WCAG 2.2 minimum touch target. */}
+            <a href="#how-it-works" className="inline-flex items-center min-h-6 hover:text-white transition-colors">How it works</a>
+            <a href="#pricing" className="inline-flex items-center min-h-6 hover:text-white transition-colors">Pricing</a>
+            <a href="#faq" className="inline-flex items-center min-h-6 hover:text-white transition-colors">FAQ</a>
+            <a href={`mailto:${CONTACT_EMAIL}`} className="inline-flex items-center min-h-6 hover:text-white transition-colors">Support</a>
           </div>
         </div>
 
-        <div className="mt-12 pt-8 border-t border-white/8 text-sm text-stone-400">
+        {/* The page is prerendered at build time; after New Year the build year and the
+            visitor's year differ until the next build, which is fine — no hydration warning. */}
+        <div className="mt-12 pt-8 border-t border-white/8 text-sm text-stone-400" suppressHydrationWarning>
           © {year} MelodyCraft. All rights reserved.
         </div>
       </div>

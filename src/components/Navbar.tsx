@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
+import { CONTACT_EMAIL } from '../config';
 
 const LINKS = [
   { href: '#how-it-works', label: 'How it works' },
   { href: '#samples', label: 'Samples' },
   { href: '#pricing', label: 'Pricing' },
   { href: '#faq', label: 'FAQ' },
+  // Contact on the first screen, not only in the footer (audit 13.11.2026).
+  { href: `mailto:${CONTACT_EMAIL}`, label: 'Contact' },
 ];
 
 export const Navbar: React.FC = () => {

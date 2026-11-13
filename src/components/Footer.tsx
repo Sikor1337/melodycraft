@@ -24,6 +24,8 @@ export const Footer: React.FC = () => {
             <a href="#pricing" className="inline-flex items-center min-h-6 hover:text-white transition-colors">Pricing</a>
             <a href="#faq" className="inline-flex items-center min-h-6 hover:text-white transition-colors">FAQ</a>
             <a href={`mailto:${CONTACT_EMAIL}`} className="inline-flex items-center min-h-6 hover:text-white transition-colors">Support</a>
+            <a href="/refunds" className="inline-flex items-center min-h-6 hover:text-white transition-colors">Refunds</a>
+            <a href="/privacy" className="inline-flex items-center min-h-6 hover:text-white transition-colors">Privacy</a>
           </div>
         </div>
 
